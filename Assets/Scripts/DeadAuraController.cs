@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DeadAuraController : MonoBehaviour
 {
-    public float auraRadius = 2f; // Радиус ауры
-    public float auraDamagePerSecond = 6f; // Урон ауры
+    public float auraRadius = 2f; // Aura radius
+    public float auraDamagePerSecond = 6f; // Aura Damage
     [SerializeField] public ParticleSystem auraParticleSystem;
 
     // Update is called once per frame
@@ -18,7 +18,7 @@ public class DeadAuraController : MonoBehaviour
         // HPS
         if (hero != null)
         {
-            hero.Heal(auraDamagePerSecond * Time.deltaTime); // Вызываем метод для лечения героя
+            hero.Heal(auraDamagePerSecond * Time.deltaTime); // Calling a method to treat the hero
         }
 
         foreach (Collider collider in colliders)
@@ -28,22 +28,22 @@ public class DeadAuraController : MonoBehaviour
             // DPS
             if (enemy != null)
             {
-                enemy.TakeDamage(auraDamagePerSecond * Time.deltaTime); // Наносим урон в секунду
+                enemy.TakeDamage(auraDamagePerSecond * Time.deltaTime); // Deal damage per second
             }
         }
     }
 
     public void UpdateAuraAttributes()
     {
-        // Обновите атрибуты ауры в соответствии с уровнем героя
-        auraDamagePerSecond += 0.5f; // Увеличение урона / лечения в зависимости от уровня
+        // Update aura attributes according to hero level
+        auraDamagePerSecond += 0.5f; // Increased damage / healing based on level
         if (auraRadius <  8f)
-            IncreaseAuraSize(); // Увеличение размера Particle System
+            IncreaseAuraSize(); // Increasing the size of the Particle System (Aura)
     }
     void IncreaseAuraSize()
     {
-        auraRadius += 0.1f; // Увеличение радиуса ауры в зависимости от уровня
+        auraRadius += 0.1f; // Increase in aura radius depending on level
         var shapeModule = auraParticleSystem.shape;
-        shapeModule.radius = auraRadius; // Обновляем параметр Radius
+        shapeModule.radius = auraRadius; // Update the Radius parameter
     }
 }

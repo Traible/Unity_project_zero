@@ -6,21 +6,19 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
-    {
+    //void Start()
+    //{
         
-    }
+    //}
 
     // Update is called once per frame
-    void Update()
-    {
+    //void Update()
+    //{
         
-    }
-
+    //}
     public void SceneLoad(int index)
     {
-        // Сохранить лучшее время перед загрузкой новой сцены
-        //PlayerPrefs.SetFloat("BestTime", FindObjectOfType<HeroController>().bestTime);
+        PlayerPrefs.SetFloat("BestTime", FindObjectOfType<HeroController>().bestTime); // Save best time before loading new scene
         SceneManager.LoadScene(index);
     }
     public void QuitGameWithMainMenu()

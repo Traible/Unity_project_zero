@@ -7,23 +7,22 @@ using UnityEngine.Playables;
 public class EnemyController : MonoBehaviour
 {
     //private float currentHealth;
-    public float attackDistance = 2f; // Расстояние, на котором начинается атака
-    public float stopAttackDistance = 3f; // Минимальное расстояние, на котором атака прекращается
+    public float attackDistance = 2f; // Distance at which the attack begins
+    public float stopAttackDistance = 3f; // Minimum distance at which the attack stops
     float frameRate = 60f;
 
-    public float speed = 6f;
-    public float enemyLevel = 1f; // Уровень врага
-    public float maxHealth = 20f; // Здоровье врага
-    public float damage = 3f;  // Урон, наносимый врагом
-    public float enemyExperience = 0.01f; //  (опыт за килл)
+    public float speed = 6f; // Enemy speed
+    public float enemyLevel = 1f; // Enemy level
+    public float maxHealth = 20f; // Enemy health
+    public float damage = 3f;  // Damage dealt by enemy
+    public float enemyExperience = 0.01f; // experience per kill
 
-    public Transform target; // Трансформ главного героя
+    public Transform target; // Transformation of the main character
     private NavMeshAgent agent;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        //currentHealth = maxHealth;
     }
 
     // Start is called before the first frame update
@@ -34,34 +33,32 @@ public class EnemyController : MonoBehaviour
 
         if (target != null)
         {
-            agent.SetDestination(target.position); // Устанавливаем цель для преследования
+            agent.SetDestination(target.position); // Set the target for pursuit
         }
 
         if (distanceToTarget <= attackDistance)
         {
-            DealDamage(); // Наносим урон герою
+            DealDamage(); // Deal damage to the hero
         }
 
         if (distanceToTarget >= stopAttackDistance)
         {
-            // Прекращаем атаку (на будущее для Range DD)
+            // todo Stop the attack (for the future for Range DD)
         }
     }
-    // Метод для получения урона
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage) // Method for taking damage
     {
-        //currentHealth -= damage;
         maxHealth -= damage; 
         if (maxHealth <= 0)
         {
-            DieWithAnimation(); // метод для удаления врага с анимацией исчезновения
+            DieWithAnimation(); // Method for removing an enemy with a disappearing animation
         }
     }
     public void DealDamage()
     {
         if (target != null)
         {
-            // Вызов метода HeroTakeDamage в контроллере героя
+            // Calling the HeroTakeDamage method in the hero controller
             if (Vector3.Distance(transform.position, target.position) <= stopAttackDistance)
                 target.GetComponent<HeroController>().HeroTakeDamage(damage / frameRate);
         }
@@ -70,38 +67,28 @@ public class EnemyController : MonoBehaviour
     {
         StartCoroutine(ShrinkAndDestroy());
     }
-
-    //public void IncreaseLevelEnemy()
-    //{
-    //    enemyLevel += 1f;  // Уровень врага
-    //    maxHealth += 15f; // Здоровье врага
-    //    damage += 2f;  // Урон, наносимый врагом
-    //    enemyExperience += 0.01f; //  (опыт за килл)
-    //    if (enemyLevel %5 == 0) 
-    //        speed += 0.5f;
-    //}
     private IEnumerator ShrinkAndDestroy()
     {
-        float duration = 0.5f; // Длительность анимации (в секундах)
+        float duration = 0.5f; // Animation duration (in seconds)
         float elapsedTime = 0f;
 
         Vector3 initialScale = transform.localScale;
-        Vector3 targetScale = Vector3.zero; // Уменьшение до нуля
+        Vector3 targetScale = Vector3.zero; // Reducing the model size to zero
 
-        target.GetComponent<HeroController>().HeroGetExperience(enemyExperience * enemyLevel); // Даём  опыт за убийство
+        target.GetComponent<HeroController>().HeroGetExperience(enemyExperience * enemyLevel); // We give experience for killing
 
         while (elapsedTime < duration)
         {
-            if (transform != null) // Проверка на существование объекта
+            if (transform != null) // Checking for the existence of an object
             {
                 transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / duration);
                 elapsedTime += Time.deltaTime;
             }
             yield return null;
         }
-        if (transform != null) // Проверка на существование объекта
+        if (transform != null) // Checking for the existence of an object
         {
-            Destroy(gameObject); // Уничтожаем объект после анимации
+            Destroy(gameObject); // Destroying an object after animation
         }
     }
 }

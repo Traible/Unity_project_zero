@@ -7,7 +7,6 @@ using UnityEngine.AI;
 public class CameraController : MonoBehaviour
 {
     public float rotateSpeed = 20.0f, speed = 10.0f, zoomSpeed = 500f;
-
     private float _mult = 1f;
 
     private void Update()
@@ -36,9 +35,9 @@ public class CameraController : MonoBehaviour
             Mathf.Clamp(transform.position.y, -20f, 10f),
             transform.position.z);
 
+        //todo
         //if (Input.GetMouseButtonDown(0))
         //{
-
         //    Ray ray = GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         //    GetComponent<NavMeshAgent>().SetDestination(this.GameObject);
         //}

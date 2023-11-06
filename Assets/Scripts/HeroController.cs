@@ -7,10 +7,10 @@ using UnityEngine.UIElements;
 
 public class HeroController : MonoBehaviour
 {
-    [SerializeField] public UnityEngine.UI.Image HealthBarImage; // Ссылка на изображение полосы здоровья в интерфейсе
-    [SerializeField] public UnityEngine.UI.Image ExperienceBarImage; // Ссылка на изображение полосы опыта в интерфейсе
-    [SerializeField] public Text timeText; // Очки (время)
-    [SerializeField] public Text timeTextBest; // Очки (рекорд / время)
+    [SerializeField] public UnityEngine.UI.Image HealthBarImage; // Link to the image of the health bar in the interface
+    [SerializeField] public UnityEngine.UI.Image ExperienceBarImage; // Link to the image of the experience bar in the interface
+    [SerializeField] public Text timeText; // Current Survival Time
+    [SerializeField] public Text timeTextBest; // Better survival time
     private DeadAuraController auraController;
     private Animator AnimatorHero;
     private NavMeshAgent navMeshAgent;
@@ -34,13 +34,13 @@ public class HeroController : MonoBehaviour
         pauseController = FindObjectOfType<PauseController>();
         startTime = Time.time;
         bestTime = PlayerPrefs.GetFloat("BestTime", 0f);
-        startTime = Time.time; // Инициализация времени при старте игры
+        startTime = Time.time; // Initializing time when starting the game
         currentTime = 0f;
     }
     // Update is called once per frame
     void Update()
     {
-        currentTime = Time.time - startTime; // Получаем текущее время в секундах
+        currentTime = Time.time - startTime; // Get the current time in seconds
         string formattedTime = string.Format("{0}:{1:00}", (int)currentTime / 60, (int)currentTime % 60);
         timeText.text = "Time: " + formattedTime;
         if (currentTime >= bestTime)
@@ -60,11 +60,13 @@ public class HeroController : MonoBehaviour
                 AnimatorHero.SetBool("IsWalking", true);
             }
         }
+
         //else if (Input.GetMouseButton(1) || Input.GetKey(KeyCode.Space))
         //{
-        //    // Атака
+        //    // Alternative Attack
         //    AnimatorHero.SetTrigger("Attack");
         //}
+
         if (isWalking && !navMeshAgent.pathPending)
         {
             if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
@@ -83,24 +85,24 @@ public class HeroController : MonoBehaviour
     }
     public void Heal(float amount)
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth); // Увеличиваем здоровье, но не больше максимального значения
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth); // We increase health, but not more than the maximum value
     }
     void UpdateHealthBar()
     {
-        float healthPercentage = currentHealth / maxHealth; // Вычислите процент здоровья (от 0.0 до 1.0)
-        HealthBarImage.fillAmount = healthPercentage; // Установите заполнение изображения полосы здоровья
+        float healthPercentage = currentHealth / maxHealth; // Calculate health percentage (from 0.0 to 1.0)
+        HealthBarImage.fillAmount = healthPercentage; // Set health bar image fill
     }
     void UpdateExperienceBar()
     {
-        float experiencePercentage = currentExperience / maxExperience; // Вычислите процент опыта (от 0.0 до 1.0)
-        ExperienceBarImage.fillAmount = experiencePercentage; // Установите заполнение изображения полосы опыта
+        float experiencePercentage = currentExperience / maxExperience; // Calculate experience percentage (from 0.0 to 1.0)
+        ExperienceBarImage.fillAmount = experiencePercentage; // Set the experience bar image fill
     }
     public void HeroTakeDamage(float damage)
     {
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            currentHealth = 0; // Заглушка, т.к. во реализации урона врагов хп улетало в минус огромные числа
+            currentHealth = 0;
             Time.timeScale = 0f;
             pauseController.ShowPauseMenuOnGameOver();
             if (currentTime > bestTime)
@@ -109,8 +111,7 @@ public class HeroController : MonoBehaviour
                 PlayerPrefs.SetFloat("BestTime", bestTime);
                 PlayerPrefs.Save();
             }
-            // Обработка смерти героя
-            // Можете добавить здесь код для обработки смерти героя
+            // todo Handling a hero's death
         }
     }
     public void HeroGetExperience(float ExpPerkill)
@@ -126,8 +127,7 @@ public class HeroController : MonoBehaviour
                 currentHealth += 10f;
                 maxHealth += 20f;
             }
-            // todo lvlup
+            // todo lvlup other mechanics
         }
     }
-
 }

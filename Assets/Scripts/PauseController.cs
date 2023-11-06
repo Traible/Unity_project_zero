@@ -10,8 +10,8 @@ public class PauseController : MonoBehaviour
     public GameObject Pause_menuUI;
     public GameObject Panel_HUDUI;
     public GameObject GameOver_menuUI;
-    [SerializeField] public Text timeText; // Очки (время)
-    [SerializeField] public Text timeTextBest; // Очки (рекорд / время)
+    [SerializeField] public Text timeText; // Current Survival Time
+    [SerializeField] public Text timeTextBest; // Best Survival Time
 
     // Update is called once per frame
     void Update()
@@ -30,7 +30,8 @@ public class PauseController : MonoBehaviour
     }
     public void Resume() 
     {
-        //foreach (Transform child in Pause_menuUI.transform) // Установите фиксированный размер для каждого дочернего объекта
+        //  todo
+        //  foreach (Transform child in Pause_menuUI.transform) // Set a fixed size for each child object
         //  child.GetComponent<Animation>();
         Pause_menuUI.SetActive(false);
         Panel_HUDUI.SetActive(true);
@@ -45,7 +46,6 @@ public class PauseController : MonoBehaviour
         Time.timeScale = 0f;
         GameIsPaused = true;
     }
-
     public void LoadMenu()
     {
         Time.timeScale = 1f;
@@ -60,13 +60,11 @@ public class PauseController : MonoBehaviour
     {
         Application.Quit();
     }
-
     public void ShowPauseMenuOnGameOver()
     {
         Panel_HUDUI.SetActive(false);
         GameOver_menuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
-
     }
 }
