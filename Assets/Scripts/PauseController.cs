@@ -10,6 +10,7 @@ public class PauseController : MonoBehaviour
     public GameObject Pause_menuUI;
     public GameObject Panel_HUDUI;
     public GameObject GameOver_menuUI;
+    public HeroController heroController;
     [SerializeField] public Text timeText; // Current Survival Time
     [SerializeField] public Text timeTextBest; // Best Survival Time
 
@@ -35,6 +36,7 @@ public class PauseController : MonoBehaviour
         //  child.GetComponent<Animation>();
         Pause_menuUI.SetActive(false);
         Panel_HUDUI.SetActive(true);
+        GameOver_menuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
         
@@ -43,6 +45,7 @@ public class PauseController : MonoBehaviour
     {
         Pause_menuUI.SetActive(true);
         Panel_HUDUI.SetActive(false);
+        GameOver_menuUI.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
     }
@@ -53,8 +56,10 @@ public class PauseController : MonoBehaviour
     }
     public void Restart()
     {
-        Time.timeScale = 1f;
+        // Resume();
+        LoadMenu(); // Just a crutch
         SceneManager.LoadScene("MainScene");
+        Time.timeScale = 1f;
     }
     public void QuitGame()
     {
@@ -62,9 +67,12 @@ public class PauseController : MonoBehaviour
     }
     public void ShowPauseMenuOnGameOver()
     {
+        Pause_menuUI.SetActive(false);
         Panel_HUDUI.SetActive(false);
         GameOver_menuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+        timeText.text = heroController.timeText.text; // Получить текущее время как строку
+        timeTextBest.text = heroController.timeTextBest.text; // Получить лучшее время как строку
     }
 }

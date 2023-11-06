@@ -24,6 +24,8 @@ public class HeroController : MonoBehaviour
     public float currentTime = 0f;
     public float bestTime = 0f;
     private float startTime;
+    private float lastCheckTime = 0f;
+    private float checkInterval = 0.5f; // Check interval in seconds
 
     // Start is called before the first frame update
     void Start()
@@ -32,19 +34,30 @@ public class HeroController : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         auraController = FindObjectOfType<DeadAuraController>();
         pauseController = FindObjectOfType<PauseController>();
-        startTime = Time.time;
-        bestTime = PlayerPrefs.GetFloat("BestTime", 0f);
         startTime = Time.time; // Initializing time when starting the game
         currentTime = 0f;
+        bestTime = PlayerPrefs.GetFloat("BestTime", 0f);
+        string formattedBestTime = string.Format("{0}:{1:00}", (int)bestTime / 60, (int)bestTime % 60);
+        timeTextBest.text = "Best: " + formattedBestTime;
     }
     // Update is called once per frame
     void Update()
     {
-        currentTime = Time.time - startTime; // Get the current time in seconds
-        string formattedTime = string.Format("{0}:{1:00}", (int)currentTime / 60, (int)currentTime % 60);
-        timeText.text = "Time: " + formattedTime;
-        if (currentTime >= bestTime)
-            timeTextBest.text = "Best: " + formattedTime;
+        if (Time.time - lastCheckTime >= checkInterval)  // Optimization
+        {
+            currentTime = Time.time - startTime; // Get the current time in seconds
+            string formattedTime = string.Format("{0}:{1:00}", (int)currentTime / 60, (int)currentTime % 60);
+            timeText.text = "Time: " + formattedTime;
+            if (currentTime >= bestTime)
+            {
+                bestTime = currentTime; // Update best time
+                timeTextBest.text = "Best: " + formattedTime;
+                PlayerPrefs.SetFloat("BestTime", bestTime);
+                PlayerPrefs.Save();
+            }
+            lastCheckTime = Time.time;
+        }
+
         UpdateHealthBar();
         UpdateExperienceBar();
         if (Input.GetMouseButton(0))
@@ -52,9 +65,8 @@ public class HeroController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit)) // Target for NavMeshAgent
             {
-                // Target for NavMeshAgent
                 navMeshAgent.SetDestination(hit.point);
                 isWalking = true;
                 AnimatorHero.SetBool("IsWalking", true);
@@ -105,12 +117,12 @@ public class HeroController : MonoBehaviour
             currentHealth = 0;
             Time.timeScale = 0f;
             pauseController.ShowPauseMenuOnGameOver();
-            if (currentTime > bestTime)
-            {
-                bestTime = currentTime;
-                PlayerPrefs.SetFloat("BestTime", bestTime);
-                PlayerPrefs.Save();
-            }
+            //if (currentTime > bestTime)
+            //{
+            //    bestTime = currentTime;
+            //    PlayerPrefs.SetFloat("BestTime", bestTime);
+            //    PlayerPrefs.Save();
+            //}
             // todo Handling a hero's death
         }
     }
