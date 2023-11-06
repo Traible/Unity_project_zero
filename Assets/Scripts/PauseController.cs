@@ -56,7 +56,6 @@ public class PauseController : MonoBehaviour
     }
     public void Restart()
     {
-        // Resume();
         LoadMenu(); // Just a crutch
         SceneManager.LoadScene("MainScene");
         Time.timeScale = 1f;
@@ -72,7 +71,7 @@ public class PauseController : MonoBehaviour
         GameOver_menuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
-        timeText.text = heroController.timeText.text; // Получить текущее время как строку
-        timeTextBest.text = heroController.timeTextBest.text; // Получить лучшее время как строку
+        timeText.text = heroController.timeText.text; // Get current time as a string
+        timeTextBest.text = heroController.timeTextBest.text; // Get best time as a string
     }
 }
