@@ -18,7 +18,7 @@ public class SceneLoader : MonoBehaviour
     //}
     public void SceneLoad(int index)
     {
-        PlayerPrefs.SetFloat("BestTime", FindObjectOfType<HeroController>().bestTime); // Save best time before loading new scene
+        // todo PlayerPrefs.SetFloat("BestTime", FindObjectOfType<HeroController>().bestTime); // Save best time before loading new scene
         SceneManager.LoadScene(index);
     }
     public void QuitGameWithMainMenu()
