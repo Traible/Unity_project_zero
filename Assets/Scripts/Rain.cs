@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rain : MonoBehaviour
+public class rainController : MonoBehaviour
 {
     public Light dirLight;
     private ParticleSystem _ps;
     private bool _isRain = false;
-
     private void Start()
     {
         _ps = GetComponent<ParticleSystem>();
@@ -17,7 +16,7 @@ public class Rain : MonoBehaviour
     {
         if (_isRain && dirLight.intensity > 0.25f)
             LightIntencity(-1);
-        if (!_isRain && dirLight.intensity < 0.5f)
+        if (!_isRain && dirLight.intensity < 0.75f)
             LightIntencity(1);
     }
     private void LightIntencity(int mult)
@@ -28,7 +27,7 @@ public class Rain : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(10f, 15f));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(60f, 90f));
 
             if (_isRain)
                 _ps.Stop();
