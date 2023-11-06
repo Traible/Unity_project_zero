@@ -19,7 +19,7 @@ public class HeroController : MonoBehaviour
     private float currentHealth = 30f;
     private float maxHealth = 50f;
     public float currentExperience = 0f;
-    public float maxExperience = 10f;
+    public float maxExperience = 5f;
     public float HeroLevel = 1f;
     public float currentTime = 0f;
     public float bestTime = 0f;
