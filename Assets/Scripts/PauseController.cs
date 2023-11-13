@@ -10,6 +10,7 @@ public class PauseController : MonoBehaviour
     public GameObject Pause_menuUI;
     public GameObject Panel_HUDUI;
     public GameObject GameOver_menuUI;
+    public GameObject Leaderboards_menuUI;
     public HeroController heroController;
     [SerializeField] public Text timeText; // Current Survival Time
     [SerializeField] public Text timeTextBest; // Best Survival Time
@@ -37,15 +38,16 @@ public class PauseController : MonoBehaviour
         Pause_menuUI.SetActive(false);
         Panel_HUDUI.SetActive(true);
         GameOver_menuUI.SetActive(false);
+        Leaderboards_menuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
-        
     }
     void Pause()
     {
         Pause_menuUI.SetActive(true);
         Panel_HUDUI.SetActive(false);
         GameOver_menuUI.SetActive(false);
+        Leaderboards_menuUI.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
     }
@@ -56,8 +58,9 @@ public class PauseController : MonoBehaviour
     }
     public void Restart()
     {
+        Scene currentScene = SceneManager.GetActiveScene();
         LoadMenu(); // Just a crutch
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene(currentScene.name);
         Time.timeScale = 1f;
     }
     public void QuitGame()
@@ -69,9 +72,18 @@ public class PauseController : MonoBehaviour
         Pause_menuUI.SetActive(false);
         Panel_HUDUI.SetActive(false);
         GameOver_menuUI.SetActive(true);
+        Leaderboards_menuUI.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
         timeText.text = heroController.timeText.text; // Get current time as a string
         timeTextBest.text = heroController.timeTextBest.text; // Get best time as a string
+    }
+    public void BackFromLeaderboard()
+    {
+        Leaderboards_menuUI.SetActive(false);
+    }
+    public void Leaderboard()
+    {
+        Leaderboards_menuUI.SetActive(true);
     }
 }

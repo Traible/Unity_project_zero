@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class HeroController : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class HeroController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        QualitySettings.vSyncCount = 1;
         AnimatorHero = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         auraController = FindObjectOfType<DeadAuraController>();
@@ -50,10 +52,14 @@ public class HeroController : MonoBehaviour
             timeText.text = "Time: " + formattedTime;
             if (currentTime >= bestTime)
             {
-                bestTime = currentTime; // Update best time
-                timeTextBest.text = "Best: " + formattedTime;
-                PlayerPrefs.SetFloat("BestTime", bestTime);
-                PlayerPrefs.Save();
+                Scene currentScene = SceneManager.GetActiveScene();
+                if (currentScene.name == "MainScene") 
+                {
+                    bestTime = currentTime; // Update best time
+                    timeTextBest.text = "Best: " + formattedTime;
+                    PlayerPrefs.SetFloat("BestTime", bestTime);
+                    PlayerPrefs.Save();
+                }
             }
             lastCheckTime = Time.time;
         }

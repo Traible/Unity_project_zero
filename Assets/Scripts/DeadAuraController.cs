@@ -36,13 +36,13 @@ public class DeadAuraController : MonoBehaviour
     public void UpdateAuraAttributes()
     {
         // Update aura attributes according to hero level
-        auraDamagePerSecond += 0.5f; // Increased damage / healing based on level
+        auraDamagePerSecond += 1f; // Increased damage / healing based on level
         if (auraRadius <  8f)
             IncreaseAuraSize(); // Increasing the size of the Particle System (Aura)
     }
     void IncreaseAuraSize()
     {
-        auraRadius += 0.1f; // Increase in aura radius depending on level
+        auraRadius += 0.2f; // Increase in aura radius depending on level
         var shapeModule = auraParticleSystem.shape;
         shapeModule.radius = auraRadius; // Update the Radius parameter
     }

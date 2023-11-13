@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemySpawnController : MonoBehaviour
 {
@@ -53,12 +54,25 @@ public class EnemySpawnController : MonoBehaviour
         }
         void IncreaseLevelEnemy()
         {
-            enemyLevel += 1f;
-            maxHealth += 10f;
-            damage += 2f;
-            enemyExperience += 0.01f;
-            if (enemyLevel % 5 == 0)
-                speed += 0.5f;
+            Scene currentScene = SceneManager.GetActiveScene();
+            if (currentScene.name == "MainScene")
+            {
+                enemyLevel += 1f;
+                maxHealth += 10f;
+                damage += 2f;
+                enemyExperience += 0.01f;
+                if (enemyLevel % 5 == 0)
+                    speed += 0.5f;
+            }
+            else
+            {
+                enemyLevel += 1f;
+                maxHealth += 5f;
+                enemyExperience += 0.04f;
+                damage += 1f;
+                if (enemyLevel % 3 == 0)
+                    speed += 1f;
+            }
         }
     }
 }
