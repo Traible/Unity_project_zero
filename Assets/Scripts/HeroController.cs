@@ -123,12 +123,6 @@ public class HeroController : MonoBehaviour
             currentHealth = 0;
             Time.timeScale = 0f;
             pauseController.ShowPauseMenuOnGameOver();
-            //if (currentTime > bestTime)
-            //{
-            //    bestTime = currentTime;
-            //    PlayerPrefs.SetFloat("BestTime", bestTime);
-            //    PlayerPrefs.Save();
-            //}
             // todo Handling a hero's death
         }
     }
